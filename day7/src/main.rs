@@ -1,9 +1,8 @@
 use std::fmt::Debug;
 
-use common;
-
 #[derive(Debug)]
-struct hand {
+struct Hand {
+    #[allow(dead_code)]
     cards: [char; 5],
     bid: u64,
     value: u64,
@@ -20,15 +19,7 @@ fn part1(input: Vec<String>) -> u64 {
     let mut points: u64 = 0;
     let mut multiplier: u64 = 1;
 
-    // for hand in hands.iter() {
-    //     println!("{:?}", hand);
-    // }
-
     hands.sort_by_key(|x| x.value);
-
-    // for hand in hands.iter() {
-    //     println!("{:?}", hand);
-    // }
 
     for hand in hands.iter_mut() {
         points += hand.bid * multiplier;
@@ -44,15 +35,7 @@ fn part2(input: Vec<String>) -> u64 {
     let mut points: u64 = 0;
     let mut multiplier: u64 = 1;
 
-    // for hand in hands.iter() {
-    //     println!("{:?}", hand);
-    // }
-
     hands.sort_by_key(|x| x.value);
-
-    // for hand in hands.iter() {
-    //     println!("{:?}", hand);
-    // }
 
     for hand in hands.iter_mut() {
         points += hand.bid * multiplier;
@@ -63,8 +46,8 @@ fn part2(input: Vec<String>) -> u64 {
     points
 }
 
-fn get_hands(mut input: Vec<String>) -> Vec<hand> {
-    let mut hands: Vec<hand> = Vec::new();
+fn get_hands(input: Vec<String>) -> Vec<Hand> {
+    let mut hands: Vec<Hand> = Vec::new();
     for line in input {
         hands.push(get_hand(line));
     }
@@ -72,29 +55,27 @@ fn get_hands(mut input: Vec<String>) -> Vec<hand> {
     hands
 }
 
-fn get_hands2(mut input: Vec<String>) -> Vec<hand> {
-    let mut hands: Vec<hand> = Vec::new();
+fn get_hands2(mut input: Vec<String>) -> Vec<Hand> {
+    let mut hands: Vec<Hand> = Vec::new();
 
-    input.iter_mut().for_each(|mut line| {
-        *line = line.replace("J", "1");
+    input.iter_mut().for_each(|line| {
+        *line = line.replace('J', "1");
         hands.push(get_hand(line.to_string()));
     });
 
     hands
 }
 
-fn get_hand(line: String) -> hand {
+fn get_hand(line: String) -> Hand {
     let mut cards: [char; 5] = ['0'; 5];
     let line_split = line.split_whitespace().collect::<Vec<&str>>();
 
-    let mut i: usize = 0;
-    for c in line_split[0].chars() {
+    for (i, c) in line_split[0].chars().enumerate() {
         cards[i] = c;
-        i += 1;
     }
 
-    hand {
-        cards: cards,
+    Hand {
+        cards,
         bid: line_split[1].parse::<u64>().unwrap(),
         value: get_hand_value(cards),
         rank: 0,
@@ -113,17 +94,19 @@ fn get_hand_value(cards: [char; 5]) -> u64 {
 }
 
 fn get_type_value(cards: [char; 5]) -> u64 {
+    #[allow(unused_assignments)]
     let mut value: u64 = 0;
+
     let mut occ_biggest: u64 = 0;
     let mut occ_second_biggest: u64 = 0;
     let mut checked = vec![];
-    //println!("cards= {:?}", cards);
+
     for c in cards.iter() {
         if checked.contains(c) || *c == '1' {
             continue;
         }
         checked.push(*c);
-        let mut occ: u64 = cards.iter().filter(|&x| x == c).count() as u64;
+        let occ: u64 = cards.iter().filter(|&x| x == c).count() as u64;
 
         if occ > occ_biggest {
             occ_second_biggest = occ_biggest;
@@ -138,23 +121,15 @@ fn get_type_value(cards: [char; 5]) -> u64 {
 
     if occ_biggest >= 4 {
         value = occ_biggest + 2;
-        //println!("Five or four: {:?}  -> {}", cards, value);
     } else if occ_biggest == 3 && occ_second_biggest >= 2 {
         value = 5;
-        //println!("Full: {:?}  -> {}", cards, value);
     } else if occ_biggest == 2 && occ_second_biggest == 2 {
         value = 3;
-        //println!("Two pair: {:?}  -> {}", cards, value);
     } else if occ_biggest == 3 {
         value = 4;
-        //println!("Triple: {:?}  -> {}", cards, value);
     } else {
         value = occ_biggest;
-        //println!("Pair or high: {:?}  -> {}", cards, value);
     }
-
-    //println!("{:?} -> {}", cards, value);
-    //println!("{} > {}", occ_biggest, occ_second_biggest);
 
     value
 }
@@ -191,6 +166,25 @@ mod tests {
     #[test]
     fn test_part2() {
         assert_eq!(super::part2(get_part1_test_input()), 5905);
+    }
+
+    #[test]
+    fn test_get_hand() {
+        //Test without wildcards
+        let hand = super::get_hand("32T3K 765".to_string());
+
+        println!("{:?}", hand);
+
+        assert_eq!(hand.bid, 765);
+        assert_eq!(hand.value, 20302100313);
+
+        //Test with wildcards
+        let hand2 = super::get_hand("3213K 666".to_string());
+
+        println!("{:?}", hand2);
+
+        assert_eq!(hand2.bid, 666);
+        assert_eq!(hand2.value, 40302010313);
     }
 
     #[test]
