@@ -1,11 +1,9 @@
-use std::fmt::Debug;
-
 fn main() {
     println!("Part 1: {}", part1(common::read_lines("./input1.txt")));
     println!("Part 2: {}", part2(common::read_lines("./input2.txt")));
 }
 
-fn part1(mut input: Vec<String>) -> u64 {
+fn part1(input: Vec<String>) -> u64 {
     let mut result: i64 = 0;
 
     input.iter().for_each(|line| {
@@ -14,18 +12,17 @@ fn part1(mut input: Vec<String>) -> u64 {
             .map(|x| x.parse::<i64>().unwrap())
             .collect::<Vec<i64>>();
         for (i, number) in numbers.iter().enumerate() {
-            let mut line_result = 0;
             result += number
                 * comb(numbers.len() as i64, i as i64)
-                * (-1 as i32).pow(numbers.len() as u32 - 1 - i as u32) as i64;
+                * (-1_i32).pow(numbers.len() as u32 - 1 - i as u32) as i64;
         }
     });
 
     result as u64
 }
 
-fn part2(mut input: Vec<String>) -> u64 {
-        let mut result: i64 = 0;
+fn part2(input: Vec<String>) -> u64 {
+    let mut result: i64 = 0;
 
     input.iter().for_each(|line| {
         let numbers = line
@@ -33,10 +30,8 @@ fn part2(mut input: Vec<String>) -> u64 {
             .map(|x| x.parse::<i64>().unwrap())
             .collect::<Vec<i64>>();
         for (i, number) in numbers.iter().enumerate() {
-            let mut line_result = 0;
-            result += number
-                * comb(numbers.len() as i64, i as i64 + 1)
-                * (-1 as i32).pow(i as u32) as i64;
+            result +=
+                number * comb(numbers.len() as i64, i as i64 + 1) * (-1_i32).pow(i as u32) as i64;
         }
     });
 
