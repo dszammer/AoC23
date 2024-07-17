@@ -26,6 +26,7 @@ Here is an example engine schematic:
 In this schematic, two numbers are not part numbers because they are not adjacent to a symbol: 114 (top right) and 58 (middle right). Every other number is adjacent to a symbol and so is a part number; their sum is 4361.
 
 Of course, the actual engine schematic is much larger. What is the sum of all of the part numbers in the engine schematic?
+
 --- Part Two ---
 The engineer finds the missing part and installs it in the engine! As the engine springs to life, you jump in the closest gondola, finally ready to ascend to the water source.
 
