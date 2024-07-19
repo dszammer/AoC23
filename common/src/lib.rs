@@ -7,3 +7,11 @@ pub fn read_lines(filename: &str) -> Vec<String> {
         .map(String::from) // make each slice into a string
         .collect() // gather them together into a vector
 }
+
+#[derive(Debug, Clone, Eq, Hash, PartialEq)]
+pub struct Point {
+    pub x: i64,
+    pub y: i64,
+}
+
+impl Copy for Point {}
