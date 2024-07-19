@@ -80,12 +80,16 @@ fn expand_universe(
         for col in expanding_cols.iter() {
             if galaxy.x > *col as i64 {
                 expansion_x += expansion_factor - 1;
+            } else {
+                break;
             }
         }
 
         for row in expanding_rows.iter() {
             if galaxy.y > *row as i64 {
                 expansion_y += expansion_factor - 1;
+            } else {
+                break;
             }
         }
 
