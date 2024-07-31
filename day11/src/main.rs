@@ -133,12 +133,12 @@ mod tests {
 
     fn get_test_input() -> Vec<String> {
         vec![
-            "...#......".to_string(),
             ".......#..".to_string(),
             "#.........".to_string(),
-            "..........".to_string(),
             "......#...".to_string(),
+            "...#......".to_string(),
             ".#........".to_string(),
+            "..........".to_string(),
             ".........#".to_string(),
             "..........".to_string(),
             ".......#..".to_string(),
